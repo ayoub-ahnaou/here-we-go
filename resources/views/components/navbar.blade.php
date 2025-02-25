@@ -33,8 +33,8 @@
             <li class="relative group h-full">
                 <div class="flex items-center gap-1 hover:bg-gray-200 h-full px-2 cursor-pointer">
                     @auth
-                    <img src="{{ Auth::user()->image != null ? asset('storage/' . Auth::user()->image) : asset('assets/icons/profile.svg') }}"
-                        class="size-5 rounded-full object-cover" alt="" />
+                        <img src="{{ Auth::user()->image != null ? asset('storage/' . Auth::user()->image) : asset('assets/icons/profile.svg') }}"
+                            class="size-5 rounded-full object-cover" alt="" />
                     @endauth
                     <span class="font-medium pl-1">
                         @auth
@@ -62,19 +62,28 @@
                         </div>
                     @endauth
 
+                    @auth
+                        @if (Auth::user()->role_id === 1)
+                            <a href="{{ route('dashboard') }}"
+                                class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50">Dachboard</a>
+                        @endif
+                    @endauth
+
                     <hr class="text-gray-200 h-[0.5px]" />
 
                     <!-- Auth Section -->
                     <div class="">
-                        <a href="{{ route('login') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50">Se
-                            connecter</a>
-                        <a href="{{ route('register') }}"
-                            class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50">S'inscrire</a>
+                        @guest
+                            <a href="{{ route('login') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50">Se
+                                connecter</a>
+                            <a href="{{ route('register') }}"
+                                class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50">S'inscrire</a>
+                        @endguest
                         @auth
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
-                                <button type="submit"
-                                    class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50">Déconnexion</button>
+                                <input type="submit"
+                                    class="block px-4 w-full cursor-pointer text-left py-2 text-xs text-gray-700 hover:bg-gray-50" value="Déconnexion" />
                             </form>
                         @endauth
                     </div>

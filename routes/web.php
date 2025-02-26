@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FavorisController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -26,3 +28,12 @@ Route::get('categories/{id}', [CategoryController::class, 'show'])->name('catego
 Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
 Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
 Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+Route::get('annonces', [AnnonceController::class, 'index'])->name('annonces.index');
+Route::get('my-annonces', [AnnonceController::class, 'myannonces'])->name('annonces.myannonces');
+Route::get('annonces/create', [AnnonceController::class, 'create'])->name('annonces.create');
+Route::post('annonces', [AnnonceController::class, 'store'])->name('annonces.store');
+Route::get('annonces/{id}', [AnnonceController::class, 'show'])->name('annonces.show');
+Route::get('annonces/{id}/edit', [AnnonceController::class, 'edit'])->name('annonces.edit');
+Route::put('annonces/{id}', [AnnonceController::class, 'update'])->name('annonces.update');
+Route::delete('annonces/{id}', [AnnonceController::class, 'destroy'])->name('annonces.destroy');

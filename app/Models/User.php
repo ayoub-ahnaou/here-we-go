@@ -53,4 +53,31 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function annonces()
+    {
+        return $this->hasMany(Annonce::class);
+    }
+
+    public function favoris()
+    {
+        return $this->belongsToMany(Annonce::class, 'favoris', 'user_id', 'annonce_id');
+    }
+
+    // add an annonce to favorites
+    public function favorite(Annonce $annonce)
+    {
+        $this->favoris()->attach($annonce->id);
+    }
+
+    // remove an annonce from favorites
+    public function unfavorite(Annonce $annonce)
+    {
+        $this->favoris()->detach($annonce->id);
+    }
+
+    public function hasFavorited(Annonce $annonce)
+    {
+        return $this->favoris()->where('annonce_id', $annonce->id)->exists();
+    }
 }

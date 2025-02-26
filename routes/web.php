@@ -37,3 +37,6 @@ Route::get('annonces/{id}', [AnnonceController::class, 'show'])->name('annonces.
 Route::get('annonces/{id}/edit', [AnnonceController::class, 'edit'])->name('annonces.edit');
 Route::put('annonces/{id}', [AnnonceController::class, 'update'])->name('annonces.update');
 Route::delete('annonces/{id}', [AnnonceController::class, 'destroy'])->name('annonces.destroy');
+
+Route::get('favoris', [FavorisController::class, 'index'])->name('favoris.index');
+Route::post('favoris/{annonce}', [FavorisController::class, 'store'])->name('favoris.store');

@@ -31,10 +31,13 @@
             @endauth --}}
 
             <li class="relative group h-full">
-                <div class="flex items-center gap-1 hover:bg-gray-200 h-full px-2 cursor-pointer">
+                <div class="flex items-center gap-1 hover:bg-gray-200 h-full px-2 cursor-pointer relative">
                     @auth
                         <img src="{{ Auth::user()->image != null ? asset('storage/' . Auth::user()->image) : asset('assets/icons/profile.svg') }}"
                             class="size-5 rounded-full object-cover" alt="" />
+                        @if (sizeof(Auth::user()->favoris) > 0)
+                            <div class="absolute h-2 w-2 rounded-full bg-red-600 top-2 left-5"></div>
+                        @endif
                     @endauth
                     <span class="font-medium pl-1">
                         @auth
@@ -65,7 +68,8 @@
                                     réservations</a>
                                 <a href="{{ route('favoris.index') }}"
                                     class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50">Mes
-                                    favoris <span class="text-white bg-red-500 w-4 h-4 rounded-full px-1 text-[10px]"> {{ sizeof(Auth::user()->favoris) ?? 0 }} </span></a>
+                                    favoris <span class="text-white bg-red-500 w-4 h-4 rounded-full px-1 text-[10px]">
+                                        {{ sizeof(Auth::user()->favoris) ?? 0 }} </span></a>
                             @endif
                         </div>
                     @endauth

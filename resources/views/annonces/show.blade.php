@@ -12,19 +12,18 @@
                     <span class="text-2xl font-bold text-gray-700" x-text="hebergement.prix + ' MAD'"></span>
                     <span class="text-gray-600 text-sm">par nuit</span>
                 </div>
-                <button @click="favoris = !favoris" class="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md">
-                    <svg x-show="!favoris" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                    <svg x-show="favoris" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500"
-                        viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </button>
+
+                <form action="{{ route('favoris.store', $annonce) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="absolute top-3 right-3 text-transparent">
+                        <svg class="w-10 h-10" fill="{{ Auth::user()->hasFavorited($annonce) ? 'red' : 'none' }}"
+                            stroke="red" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                            </path>
+                        </svg>
+                    </button>
+                </form>
             </div>
 
             <!-- Informations principales -->
@@ -163,8 +162,8 @@
                         <button @click="showMoreEquipements = !showMoreEquipements"
                             class="mt-4 text-gray-600 hover:text-gray-800 font-medium flex items-center">
                             <span x-text="showMoreEquipements ? 'Voir moins' : 'Voir tous les équipements'"></span>
-                            <svg x-show="!showMoreEquipements" xmlns="http://www.w3.org/2000/svg"
-                                class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                            <svg x-show="!showMoreEquipements" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1"
+                                viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd"
                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                     clip-rule="evenodd" />
@@ -308,11 +307,12 @@
                     <div class="p-6">
                         <h2 class="text-2xl font-bold text-gray-800 mb-4">Votre hôte</h2>
                         <div class="flex items-center mb-4">
-                            <img src="{{ asset('storage/' . $annonce->user->image) }}" alt="" class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mr-4">
+                            <img src="{{ asset('storage/' . $annonce->user->image) }}" alt=""
+                                class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mr-4">
                             <div>
                                 <p class="font-bold text-gray-800">{{ $annonce->user->firstname }}
                                     {{ $annonce->user->lastname }}</p>
-                                <p class="text-sm text-gray-500">Membre depuis
+                                <p class="text-sm text-gray-500">Joined
                                     {{ $annonce->user->created_at->diffForHumans() }}</p>
                                 {{-- <div class="flex items-center mt-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400"

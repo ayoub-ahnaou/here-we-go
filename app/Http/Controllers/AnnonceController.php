@@ -124,4 +124,15 @@ class AnnonceController extends Controller
         Annonce::destroy($id);
         return back()->with('message', 'annonce deleted with succes');
     }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $date = $request->input('date');
+        $annonces = Annonce::search($search);
+
+        $categories = Category::all();
+
+        return view('welcome', compact('annonces', 'categories', 'search'));
+    }
 }

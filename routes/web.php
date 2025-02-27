@@ -31,11 +31,10 @@ Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('
 
 Route::get('annonces', [AnnonceController::class, 'index'])->name('annonces.index');
 Route::get('my-annonces', [AnnonceController::class, 'myannonces'])->name('annonces.myannonces');
-Route::get('annonces/create', [AnnonceController::class, 'create'])->name('annonces.create');
 Route::post('annonces', [AnnonceController::class, 'store'])->name('annonces.store');
 Route::get('annonces/{id}', [AnnonceController::class, 'show'])->name('annonces.show');
-Route::get('annonces/{id}/edit', [AnnonceController::class, 'edit'])->name('annonces.edit');
-Route::put('annonces/{id}', [AnnonceController::class, 'update'])->name('annonces.update');
+Route::get('my-annonces/{id}/edit', [AnnonceController::class, 'edit'])->name('my-annonces.edit');
+Route::put('my-annonces/{id}', [AnnonceController::class, 'update'])->name('my-annonces.update');
 Route::delete('annonces/{id}', [AnnonceController::class, 'destroy'])->name('annonces.destroy');
 
 Route::get('favoris', [FavorisController::class, 'index'])->name('favoris.index');

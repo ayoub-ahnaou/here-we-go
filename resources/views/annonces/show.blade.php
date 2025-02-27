@@ -81,7 +81,7 @@
                                         d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span>Disponible à partir du <span
+                                <span>Disponible jusqu'à <span
                                         x-text="formatDate(hebergement.disponibilite)"></span></span>
                             </span>
                         </div>
@@ -131,7 +131,8 @@
                     <div class="p-6">
                         <h2 class="text-2xl font-bold text-gray-800 mb-4">Équipements</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4">
-                            <template x-for="(equip, index) in equipements" :key="index">
+                            <?php $equipements = explode(',', $annonce->equipements) ?>
+                            @foreach ($equipements as $equip)
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2"
                                         viewBox="0 0 20 20" fill="currentColor">
@@ -139,42 +140,10 @@
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                    <span class="text-gray-700" x-text="equip"></span>
+                                    <span class="text-gray-700">{{ $equip }}</span>
                                 </div>
-                            </template>
+                            @endforeach
                         </div>
-                        <div x-show="showMoreEquipements">
-                            <hr class="my-4">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4">
-                                <template x-for="(equip, index) in equipementsExtra" :key="index">
-                                    <div class="flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2"
-                                            viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        <span class="text-gray-700" x-text="equip"></span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-                        <button @click="showMoreEquipements = !showMoreEquipements"
-                            class="mt-4 text-gray-600 hover:text-gray-800 font-medium flex items-center">
-                            <span x-text="showMoreEquipements ? 'Voir moins' : 'Voir tous les équipements'"></span>
-                            <svg x-show="!showMoreEquipements" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1"
-                                viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <svg x-show="showMoreEquipements" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1"
-                                viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </button>
                     </div>
                 </div>
 
@@ -355,14 +324,7 @@
                         <p>Cette magnifique villa située en plein cœur de Paris offre un cadre luxueux et paisible pour vos vacances. Avec ses 4 chambres spacieuses, sa piscine chauffée et son jardin privé, vous profiterez d'un séjour inoubliable. La villa est entièrement équipée avec des meubles haut de gamme, une cuisine moderne, et un système de sécurité avancé. Idéale pour les familles ou les groupes d'amis, elle est proche des principales attractions parisiennes.</p>
                     `,
                 },
-                equipements: [
-                    "Piscine chauffée",
-                    "Wi-Fi haut débit",
-                    "Cuisine équipée",
-                    "Parking privé",
-                    "Jardin",
-                    "Climatisation",
-                ],
+                equipements: "{{ $annonce->equipements }}",
                 equipementsExtra: [
                     "Salle de sport",
                     "Sauna",

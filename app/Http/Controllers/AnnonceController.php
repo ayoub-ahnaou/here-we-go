@@ -94,6 +94,7 @@ class AnnonceController extends Controller
             'city' => ['required', 'string'],
             'disponibility' => ['required', 'date'],
             'equipements' => ['required', 'string'],
+            'description' => ['required', 'string'],
             'category_id' => ['required', 'numeric'],
             'price' => ['required', 'numeric'],
             'images' => ['nullable', 'image', 'mimes:jpeg,png,jpg,jfif', 'max:2048'],

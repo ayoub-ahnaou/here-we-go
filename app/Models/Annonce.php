@@ -40,4 +40,28 @@ class Annonce extends Model
     {
         return $this->favoritedBy()->where('user_id', $user->id)->exists();
     }
+
+    public static function search($query = null, $date = null)
+    {
+        $searchQuery = self::query();
+
+        if (!empty($query)) {
+            $searchQuery->where(function ($search) use ($query) {
+                $search->where('title', 'like', "%$query%")
+                    ->orWhere('city', 'like', "%$query%")
+                    ->orWhere('country', 'like', "%$query%")
+                    ->orWhere('equipements', 'like', "%$query%")
+                    ->orWhere('price', intval($query));
+            });
+        }
+
+        if ($date) {
+            $searchQuery->where(function ($search) use ($date) {
+                $search->where('disponibility', $date);
+            });
+        }
+
+        return $searchQuery->orderBy('created_at', 'desc')
+            ->paginate(12);
+    }
 }

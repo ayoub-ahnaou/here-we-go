@@ -105,7 +105,6 @@ class AnnonceController extends Controller
             if ($annonce->images && Storage::exists($annonce->images))
                 Storage::delete($annonce->images);
 
-            // Enregistre la nouvelle image
             $imagePath = $request->file('images')->store('annonces', 'public');
             
             $data['images'] = $imagePath;

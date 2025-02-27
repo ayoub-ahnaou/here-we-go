@@ -1,5 +1,33 @@
 <x-app>
     <div class="flex-grow container mx-auto">
+        <div class="search-section mcontainer mx-auto mt-4 p-6 bg-white shadow-md rounded-lg">
+            <form action="{{ route('annonces.search') }}" method="GET" class="flex items-center justify-center gap-2">
+                @csrf
+                <!-- Champ de recherche principale -->
+                <div class="flex-1">
+                    <input type="text" id="search" name="search" value="{{ $search ?? '' }}"
+                        placeholder="Ville, pays, titre, équipements, catégorie, prénom, nom, prix..."
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                        value="{{ request('search') }}">
+                </div>
+
+                <!-- Champs pour les dates de disponibilité -->
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <input type="date" id="date" name="date"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            value="{{ request('start_date') }}">
+                    </div>
+                </div>
+
+                <!-- Bouton de soumission -->
+                <button type="submit"
+                    class="search-btn w-full md:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200">
+                    Rechercher
+                </button>
+            </form>
+        </div>
+
         <!-- Navigation des catégories -->
         <div class="w-full py-4 sticky top-6 z-30">
             <div class="container mx-auto px-4 relative border-b border-gray-200 bg-white">
@@ -36,7 +64,9 @@
                             <form action="{{ route('favoris.store', $annonce) }}" method="POST">
                                 @csrf
                                 <button class="absolute top-3 right-3 text-transparent">
-                                    <svg class="w-6 h-6" fill="{{Auth::user()->hasFavorited($annonce) ? 'red' : 'none'}}" stroke="red" viewBox="0 0 24 24">
+                                    <svg class="w-6 h-6"
+                                        fill="{{ Auth::user()->hasFavorited($annonce) ? 'red' : 'none' }}"
+                                        stroke="red" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
                                         </path>

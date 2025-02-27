@@ -221,6 +221,7 @@
 
             <form class="p-6 md:p-8 space-y-6" method="POST" action="{{ route('annonces.store') }}"
                 enctype="multipart/form-data">
+                @csrf
                 {{-- {/* Image Upload */} --}}
                 <div
                     class="relative border-2 border-dashed border-gray-300 rounded-xl p-2 transition-all hover:border-gray-500 group">
@@ -235,30 +236,22 @@
                     </div>
                 </div>
 
-                {{-- {/* Location */} --}}
-                <div class="bg-gray-50 p-5 rounded-xl space-y-4">
-                    <div class="flex items-center space-x-2 text-gray-700 mb-2">
-                        <MapPin class="w-5 h-5 text-gray-500" />
-                        <h3 class="font-medium">Location</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="country" class="block text-sm font-medium text-gray-700 mb-1">
+                            Country
+                        </label>
+                        <input type="text" id="country" name="country"
+                            class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none"
+                            placeholder="Enter country" />
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="country" class="block text-sm font-medium text-gray-700 mb-1">
-                                Country
-                            </label>
-                            <input type="text" id="country" name="country"
-                                class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none"
-                                placeholder="Enter country" />
-                        </div>
-                        <div>
-                            <label for="city" class="block text-sm font-medium text-gray-700 mb-1">
-                                City
-                            </label>
-                            <input type="text" id="city" name="city"
-                                class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none"
-                                placeholder="Enter city" />
-                        </div>
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-1">
+                            City
+                        </label>
+                        <input type="text" id="city" name="city"
+                            class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none"
+                            placeholder="Enter city" />
                     </div>
                 </div>
 
@@ -285,7 +278,7 @@
                     </div>
                 </div>
 
-                {{-- {/* Description and Equipment */} --}}
+                {{-- {/* Equipment */} --}}
                 <div>
                     <label for="equipements" class="flex items-center text-sm font-medium text-gray-700 mb-1">
                         <Briefcase class="w-4 h-4 mr-1 text-gray-500" />
@@ -294,6 +287,17 @@
                     <textarea id="equipements" name="equipements" rows={5}
                         class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none resize-none"
                         placeholder="List available equipment, separate with comma"></textarea>
+                </div>
+
+                {{-- {/* Description */} --}}
+                <div>
+                    <label for="description" class="flex items-center text-sm font-medium text-gray-700 mb-1">
+                        <Briefcase class="w-4 h-4 mr-1 text-gray-500" />
+                        Description
+                    </label>
+                    <textarea id="description" name="description" rows={5}
+                        class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none resize-none"
+                        placeholder="Description here..."></textarea>
                 </div>
 
                 {{-- {/* Category and Price */} --}}

@@ -33,29 +33,25 @@
                         <ul>
                             <li class="mb-1">
                                 <a href="{{ route('dashboard') }}"
-                                    class="block px-4 py-2 bg-gray-100 text-gray-800 font-medium">
+                                    class="block px-4 py-2 {{ request()->routeIs('dashboard') ? ' text-gray-800 font-medium bg-gray-100' : ' text-gray-600 hover:bg-gray-100' }}">
                                     Statistiques
                                 </a>
                             </li>
                             <li class="mb-1">
-                                <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-100">
+                                <a href="{{ route('users.index') }}"
+                                    class="block px-4 py-2 {{ request()->routeIs('users.index') ? ' text-gray-800 font-medium bg-gray-100' : ' text-gray-600 hover:bg-gray-100' }}">
                                     Users
                                 </a>
                             </li>
                             <li class="mb-1">
                                 <a href="{{ route('annonces.index') }}"
-                                    class="block px-4 py-2 text-gray-600 hover:bg-gray-100">
+                                    class="block px-4 py-2 {{ request()->routeIs('annonces.index') ? ' text-gray-800 font-medium bg-gray-100' : ' text-gray-600 hover:bg-gray-100' }}">
                                     Offres d'hebergement
                                 </a>
                             </li>
                             <li class="mb-1">
-                                <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-100">
-                                    Proprietaire
-                                </a>
-                            </li>
-                            <li class="mb-1">
                                 <a href="{{ route('categories.index') }}"
-                                    class="block px-4 py-2 text-gray-600 hover:bg-gray-100">
+                                    class="block px-4 py-2 {{ request()->routeIs('categories.index') ? ' text-gray-800 font-medium bg-gray-100' : ' text-gray-600 hover:bg-gray-100' }}">
                                     Categories
                                 </a>
                             </li>

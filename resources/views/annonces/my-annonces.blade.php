@@ -1,4 +1,21 @@
 <x-app>
+    @if (session('message'))
+        <div id="toast"
+            class="flex items-center gap-2 absolute top-12 right-0 pr-40 bg-green-100 text-green-700 rounded-md p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" stroke="green" />
+                <path d="M9 12l2 2 4-4" stroke="green" />
+            </svg>
+            {{ session('message') }}
+        </div>
+    @endif
+    <script>
+        setTimeout(() => {
+            document.getElementById("toast").style.display = "none";
+        }, 2000);
+    </script>
+
     <div class="container mx-auto px-4 py-8">
         <!-- Search and Filter Section -->
         <div class="bg-white rounded-lg shadow-md p-4 mb-6 flex items-center justify-between">
@@ -87,17 +104,18 @@
                         <!-- Actions -->
                         <div class="col-span-1">
                             <div class="flex space-x-2">
-                                <button class="p-1 text-blue-600 hover:text-blue-800" title="Modifier">
+                                <a href="{{ route('my-annonces.edit', $annonce->id) }}"
+                                    class="p-1 text-blue-600 hover:text-blue-800" title="Modifier">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
-                                </button>
+                                </a>
                                 <form action="{{ route('annonces.destroy', $annonce) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    
+
                                     <button type="submit" class="p-1 text-red-600 hover:text-red-800"
                                         title="Supprimer">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -199,90 +217,128 @@
 
     <div id="addAnnouncementModal"
         class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white rounded-lg p-6 w-full max-w-2xl">
-            <h3 class="text-lg font-medium text-gray-800 mb-4">Ajouter une Nouvelle Annonce</h3>
-            <form method="POST" action="{{ route('annonces.store') }}" enctype="multipart/form-data">
-                @csrf
-                <!-- Image -->
-                <div class="mb-4">
-                    <label for="images" class="block text-sm font-medium text-gray-700">Image</label>
-                    <input type="file" id="images" name="images"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500">
-                </div>
+        <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden text-sm">
 
-                <div class="flex w-full gap-2">
-                    <!-- Country -->
-                    <div class="mb-4 w-1/2">
-                        <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
-                        <input type="text" id="country" name="country"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500">
-                    </div>
-                    <!-- city -->
-                    <div class="mb-4 w-1/2">
-                        <label for="city" class="block text-sm font-medium text-gray-700">City</label>
-                        <input type="text" id="city" name="city"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+            <form class="p-6 md:p-8 space-y-6" method="POST" action="{{ route('annonces.store') }}"
+                enctype="multipart/form-data">
+                {{-- {/* Image Upload */} --}}
+                <div
+                    class="relative border-2 border-dashed border-gray-300 rounded-xl p-2 transition-all hover:border-gray-500 group">
+                    <input type="file" name="images" id="images"
+                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                    <div class="flex flex-col items-center justify-center space-y-3">
+                        <div class="p-3 bg-blue-50 rounded-full text-gray-500 group-hover:bg-blue-100 transition-all">
+                            <Image class="w-8 h-8" />
+                        </div>
+                        <p class="text-gray-700 font-medium">Drag and drop your images here</p>
+                        <p class="text-sm text-gray-500">or click to browse files</p>
                     </div>
                 </div>
 
-                <!-- Titre -->
-                <div class="mb-4">
-                    <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
-                    <input type="text" id="title" name="title"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+                {{-- {/* Location */} --}}
+                <div class="bg-gray-50 p-5 rounded-xl space-y-4">
+                    <div class="flex items-center space-x-2 text-gray-700 mb-2">
+                        <MapPin class="w-5 h-5 text-gray-500" />
+                        <h3 class="font-medium">Location</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="country" class="block text-sm font-medium text-gray-700 mb-1">
+                                Country
+                            </label>
+                            <input type="text" id="country" name="country"
+                                class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none"
+                                placeholder="Enter country" />
+                        </div>
+                        <div>
+                            <label for="city" class="block text-sm font-medium text-gray-700 mb-1">
+                                City
+                            </label>
+                            <input type="text" id="city" name="city"
+                                class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none"
+                                placeholder="Enter city" />
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Disponibilité -->
-                <div class="mb-4">
-                    <label for="disponibility" class="block text-sm font-medium text-gray-700">Disponibilité</label>
-                    <input type="date" id="disponibility" name="disponibility"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+                {{-- {/* Basic Details */} --}}
+                <div class="space-y-4">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">
+                            Title
+                        </label>
+                        <input type="text" id="title" name="title"
+                            class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none"
+                            placeholder="Enter a catchy title" />
+                    </div>
+
+                    <div>
+                        <label for="disponibility" class="block text-sm font-medium text-gray-700 mb-1">
+                            Availability Date
+                        </label>
+                        <div class="relative">
+                            <input type="date" id="disponibility" name="disponibility"
+                                class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none" />
+                            <Calendar class="absolute right-3 top-3 w-5 h-5 text-gray-400 pointer-events-none" />
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Description -->
-                <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                    <textarea id="description" name="description"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"></textarea>
+                {{-- {/* Description and Equipment */} --}}
+                <div>
+                    <label for="equipements" class="flex items-center text-sm font-medium text-gray-700 mb-1">
+                        <Briefcase class="w-4 h-4 mr-1 text-gray-500" />
+                        Equipment
+                    </label>
+                    <textarea id="equipements" name="equipements" rows={5}
+                        class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none resize-none"
+                        placeholder="List available equipment, separate with comma"></textarea>
                 </div>
 
-                {{-- Equipements --}}
-                <div class="mb-4">
-                    <label for="equipements" class="block text-sm font-medium text-gray-700">Equipements</label>
-                    <textarea id="equipements" name="equipements" cols="1"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"></textarea>
+                {{-- {/* Category and Price */} --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="category_id" class="flex items-center text-sm font-medium text-gray-700 mb-1">
+                            <Tag class="w-4 h-4 mr-1 text-gray-500" />
+                            Category
+                        </label>
+                        <select id="category_id" name="category_id"
+                            class="w-full p-1 pl-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none appearance-none bg-white">
+                            <option value="" disabled selected>
+                                Select a category
+                            </option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="price" class="flex items-center text-sm font-medium text-gray-700 mb-1">
+                            <DollarSign class="w-4 h-4 mr-1 text-gray-500" />
+                            Price
+                        </label>
+                        <div class="relative">
+                            <input type="number" id="price" name="price"
+                                class="w-full pl-10 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all outline-none"
+                                placeholder="0.00" />
+                            <span class="absolute left-3 top-3 text-gray-500">DH</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Catégorie -->
-                <div class="mb-4">
-                    <label for="category_id" class="block text-sm font-medium text-gray-700">Catégorie</label>
-                    <select id="category_id" name="category_id"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500">
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Prix -->
-                <div class="mb-4">
-                    <label for="price" class="block text-sm font-medium text-gray-700">Prix</label>
-                    <input type="number" id="price" name="price"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500">
-                </div>
-
-                <!-- Actions -->
-                <div class="flex justify-end">
+                {{-- {/* Action Buttons */} --}}
+                <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 pt-4">
                     <button type="button" onclick="closeAnnouncementModal()"
-                        class="mr-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
-                        Annuler
+                        class="px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-all">
+                        Cancel
                     </button>
                     <button type="submit"
-                        class="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded-md hover:bg-gray-700">
-                        Enregistrer
+                        class="px-6 py-3 text-white bg-gradient-to-r from-gray-500 to-gray-900 rounded-lg hover:from-gray-500 hover:to-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all">
+                        Publish Announcement
                     </button>
                 </div>
-            </form>
+                </method=>
         </div>
     </div>
 </x-app>

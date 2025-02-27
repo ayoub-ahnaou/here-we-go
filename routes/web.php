@@ -1,15 +1,13 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavorisController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/dashboard', function () {
-    return view('admin.stats');
-})->middleware(['auth', 'isAdmin'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,7 +25,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('annonces', [AnnonceController::class, 'index'])->name('annonces.index');
     Route::get('annonces/{id}', [AnnonceController::class, 'show'])->name('annonces.show');
-    
+
     // delete an annonce, possible for both admin and proprietaire
     Route::middleware('isAdminOrProprietaire')->group(function () {
         Route::delete('annonces/{id}', [AnnonceController::class, 'destroy'])->name('annonces.destroy');
@@ -41,11 +39,14 @@ Route::middleware('auth')->group(function () {
         Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
         Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
     });
-    
+
     // routes possibles for proprietaire
     Route::middleware('isProprietaire')->group(function () {
-        Route::get('my-annonces', [AnnonceController::class, 'myannonces'])->name('annonces.myannonces');        
+        Route::get('my-annonces', [AnnonceController::class, 'myannonces'])->name('annonces.myannonces');
         Route::post('annonces', [AnnonceController::class, 'store'])->name('annonces.store');
         Route::get('my-annonces/{id}/edit', [AnnonceController::class, 'edit'])->name('my-annonces.edit');
         Route::put('my-annonces/{id}', [AnnonceController::class, 'update'])->name('my-annonces.update');

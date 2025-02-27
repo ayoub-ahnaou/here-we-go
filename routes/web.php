@@ -21,6 +21,7 @@ require __DIR__ . '/auth.php';
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name("welcome");
+    Route::get('/annonces/search', [AnnonceController::class, 'search'])->name("annonces.search");
 
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
 

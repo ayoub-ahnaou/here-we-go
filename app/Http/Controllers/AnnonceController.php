@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AnnonceController extends Controller
 {
@@ -77,7 +78,9 @@ class AnnonceController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $annonce = Annonce::find($id);
+        $categories = Category::all();
+        return view('annonces.edit', compact('categories', 'annonce'));
     }
 
     /**
@@ -85,7 +88,33 @@ class AnnonceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->validate([
+            'title' => ['required', 'string'],
+            'country' => ['required', 'string'],
+            'city' => ['required', 'string'],
+            'disponibility' => ['required', 'date'],
+            'equipements' => ['required', 'string'],
+            'category_id' => ['required', 'numeric'],
+            'price' => ['required', 'numeric'],
+            'images' => ['nullable', 'image', 'mimes:jpeg,png,jpg,jfif', 'max:2048'],
+        ]);
+
+        $annonce = Annonce::findOrFail($id);
+        
+        if ($request->hasFile('images')) {
+            if ($annonce->images && Storage::exists($annonce->images))
+                Storage::delete($annonce->images);
+
+            // Enregistre la nouvelle image
+            $imagePath = $request->file('images')->store('annonces', 'public');
+            
+            $data['images'] = $imagePath;
+        } else {
+            unset($data['images']);
+        }
+        
+        $annonce->update($data);
+        return to_route('annonces.myannonces')->with('message', 'Annonce updated with succes');
     }
 
     /**

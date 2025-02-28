@@ -94,9 +94,27 @@
                 @endforeach
             </div>
 
-            <div class="">
-                {{ $annonces->links() }}
+            <div class="flex items-center gap-4 justify-between">
+                <select onchange="paginate(this.value)" name="limit" id="limit"
+                    class="border-none text-xs py-1 bg-gray-100 text-gray-600 rounded-md w-24">
+                    <option {{ request('limit') == 6 ? 'selected' : '' }} value="6">6</option>
+                    <option {{ request('limit') == 12 ? 'selected' : '' }} value="12">12</option>
+                    <option {{ request('limit') == 24 ? 'selected' : '' }} value="24">24</option>
+                    <option {{ request('limit') == 36 ? 'selected' : '' }} value="36">36</option>
+                </select>
+
+                <div class="flex-1 text-xs">
+                    {{ $annonces->links() }}
+                </div>
             </div>
+
+            <script>
+                function paginate(limit) {
+                    let url = new URL(window.location.href);
+                    url.searchParams.set('limit', limit);
+                    window.location.href = url.toString();
+                }
+            </script>
         </div>
     </div>
 </x-app>

@@ -8,9 +8,12 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $annonces = Annonce::orderBy('created_at', 'desc')->paginate(12);
+        $limit = $request->input('limit', 6);
+
+
+        $annonces = Annonce::orderBy('created_at', 'desc')->paginate($limit);
         $categories = Category::all();
         return view('welcome', compact('annonces', 'categories'));
     }

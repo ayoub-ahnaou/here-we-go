@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     // delete an annonce, possible for both admin and proprietaire
     Route::middleware('isAdminOrProprietaire')->group(function () {
         Route::delete('annonces/{id}', [AnnonceController::class, 'destroy'])->name('annonces.destroy');
+        Route::put('annonces/{id}', [AnnonceController::class, 'restore'])->name('annonces.restore');
     });
 
     // routes possibles for admin
@@ -42,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('users', [UserController::class, 'index'])->name('users.index');
         Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
+        Route::get('corbeille', [AnnonceController::class, 'corbeille'])->name('annonces.corbeille');
     });
 
     // routes possibles for proprietaire

@@ -147,7 +147,6 @@ class AnnonceController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
-        $date = $request->input('date');
         $annonces = Annonce::search($search);
 
         $categories = Category::all();

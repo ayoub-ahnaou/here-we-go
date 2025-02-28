@@ -7,22 +7,13 @@
                 <div class="flex-1">
                     <input type="text" id="search" name="search" value="{{ $search ?? '' }}"
                         placeholder="Ville, pays, titre, équipements, catégorie, prénom, nom, prix..."
-                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition"
                         value="{{ request('search') }}">
-                </div>
-
-                <!-- Champs pour les dates de disponibilité -->
-                <div class="flex flex-col md:flex-row gap-4">
-                    <div class="flex-1">
-                        <input type="date" id="date" name="date"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                            value="{{ request('start_date') }}">
-                    </div>
                 </div>
 
                 <!-- Bouton de soumission -->
                 <button type="submit"
-                    class="search-btn w-full md:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200">
+                    class="search-btn w-full md:w-auto px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition duration-200">
                     Rechercher
                 </button>
             </form>

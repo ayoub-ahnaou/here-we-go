@@ -41,24 +41,24 @@ class Annonce extends Model
         return $this->favoritedBy()->where('user_id', $user->id)->exists();
     }
 
-    public static function search($query = null, $date = null)
+    public static function search($input = null)
     {
         $searchQuery = self::query();
 
-        if (!empty($query)) {
-            $searchQuery->where(function ($search) use ($query) {
-                $search->where('title', 'like', "%$query%")
-                    ->orWhere('city', 'like', "%$query%")
-                    ->orWhere('country', 'like', "%$query%")
-                    ->orWhere('equipements', 'like', "%$query%")
-                    ->orWhere('price', intval($query));
-            });
-        }
-
-        if ($date) {
-            $searchQuery->where(function ($search) use ($date) {
-                $search->where('disponibility', $date);
-            });
+        if (!empty($input)) {
+            if (preg_match('/^\d{4}$/', $input)) {
+                $searchQuery->whereYear('disponibility', '=', $input);
+            } elseif (strtotime($input)) {
+                $searchQuery->whereYear('disponibility', '=', date('Y', strtotime($input)));
+            } else {
+                $searchQuery->where(function ($search) use ($input) {
+                    $search->where('title', 'like', "%$input%")
+                        ->orWhere('city', 'like', "%$input%")
+                        ->orWhere('country', 'like', "%$input%")
+                        ->orWhere('equipements', 'like', "%$input%")
+                        ->orWhere('price', intval($input));
+                });
+            }
         }
 
         return $searchQuery->orderBy('created_at', 'desc')

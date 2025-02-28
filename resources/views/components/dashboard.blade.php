@@ -55,6 +55,12 @@
                                     Categories
                                 </a>
                             </li>
+                            <li class="mb-1">
+                                <a href="{{ route('annonces.corbeille') }}"
+                                    class="block px-4 py-2 {{ request()->routeIs('annonces.corbeille') ? ' text-gray-800 font-medium bg-gray-100' : ' text-gray-600 hover:bg-gray-100' }}">
+                                    Corbeille
+                                </a>
+                            </li>
                         </ul>
 
                         <ul>
